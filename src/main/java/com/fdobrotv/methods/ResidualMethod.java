@@ -8,10 +8,14 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.Math.PI;
 
 public class ResidualMethod {
+
+    private final Logger logger =  Logger.getLogger(this.getClass().getName());
     private double value = Math.pow(2, -10);
     private ArrayList<Double> values = new ArrayList<>();
 
@@ -24,7 +28,7 @@ public class ResidualMethod {
     public ArrayList<Double> getValues(int count) {
         for (int i = 0; i < count; i++) {
             float next = this.getNext();
-            System.out.print(next + ", ");
+            logger.log(Level.FINE, next + ", ");
         }
         System.out.println();
         return values;

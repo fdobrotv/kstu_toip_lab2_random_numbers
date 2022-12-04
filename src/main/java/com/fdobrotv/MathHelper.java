@@ -3,6 +3,7 @@ package com.fdobrotv;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MathHelper {
@@ -42,7 +43,7 @@ public class MathHelper {
     }
 
     public static TreeMap<Integer, List<Double>> splitValuesByIntervals(List<Double> values, int subIntervals) {
-        List<Double> sortedValues = values.stream().sorted().toList();
+        List<Double> sortedValues = values.stream().sorted().collect(Collectors.toList());
         Double minValue = sortedValues.get(0);
         Double maxValue = sortedValues.get(values.size() - 1);
         double range = maxValue - minValue;

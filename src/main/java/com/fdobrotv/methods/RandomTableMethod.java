@@ -43,7 +43,7 @@ public class RandomTableMethod {
     public ArrayList<Double> getValues(int count) {
         for (int i = 0; i < count; i++) {
             float next = this.getNext();
-            System.out.print(next + ", ");
+            logger.log(Level.FINE, next + ", ");
         }
         System.out.println();
         return values;

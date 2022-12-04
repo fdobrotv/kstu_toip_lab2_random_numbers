@@ -18,7 +18,7 @@ import static com.fdobrotv.MockData.getDiscreteRandomTable;
 
 public class RandomTableMethodTest {
     @Test
-    public void generateByDiscreteTableValuesTest() throws InterruptedException {
+    public void generate1000ValuesTest() throws InterruptedException {
         TreeMap<Integer, BigDecimal> discreteRandomTable = getDiscreteRandomTable();
 
         RandomTableMethod randomTableMethod = new RandomTableMethod(discreteRandomTable);
