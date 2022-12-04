@@ -12,11 +12,18 @@ public class TableHelper {
         Map<Integer, List<Double>> tableValues = MathHelper.splitValuesByIntervals(values, subIntervals);
 
         int summary = 0;
-        for (int i = 1; i <= subIntervals; i++) {
+        for (int i = 0; i < subIntervals; i++) {
             List<Double> doubles = tableValues.get(i);
-            String frequencyOfMatch = Double.toString((double) doubles.size() / (double) values.size());
+            double frequencyOfMatch = 0.0;
+            if (doubles.size() != 0) {
+                frequencyOfMatch = (double) doubles.size() / (double) values.size();
+            }
             String countOfValuesInInterval = Integer.toString(doubles.size());
-            table[i] = new String[] { i + "/" + subIntervals, countOfValuesInInterval, frequencyOfMatch};
+            table[i + 1] = new String[] {
+                    i + "/" + subIntervals,
+                    countOfValuesInInterval,
+                    Double.toString(frequencyOfMatch)
+            };
             summary += doubles.size();
         }
 

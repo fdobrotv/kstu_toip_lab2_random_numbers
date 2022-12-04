@@ -10,12 +10,10 @@ import java.util.logging.Logger;
 
 public class RandomTableMethod {
 
-    private Logger logger =  Logger.getLogger(this.getClass().getName());
-
-    private double value = Math.pow(2, -10);
-    private TreeMap<Integer, BigDecimal> discreteRandomTable;
-    private TreeMap<Double, Double> nProbabilityRanges;
-    private ArrayList<Double> values = new ArrayList<>();
+    private final Logger logger =  Logger.getLogger(this.getClass().getName());
+    private final TreeMap<Integer, BigDecimal> discreteRandomTable;
+    private final TreeMap<Double, Double> nProbabilityRanges;
+    private final ArrayList<Double> values = new ArrayList<>();
 
     public RandomTableMethod(TreeMap<Integer, BigDecimal> discreteRandomTable) {
         this.discreteRandomTable = discreteRandomTable;
@@ -44,8 +42,10 @@ public class RandomTableMethod {
 
     public ArrayList<Double> getValues(int count) {
         for (int i = 0; i < count; i++) {
-            this.getNext();
+            float next = this.getNext();
+            System.out.print(next + ", ");
         }
+        System.out.println();
         return values;
     }
 
@@ -86,7 +86,7 @@ public class RandomTableMethod {
         TableHelper.printFrequencyTable(values, intervalCount);
     }
 
-    public Map<Integer, List<Double>> getValuesByIntervals(int intervalCount) {
+    public TreeMap<Integer, List<Double>> getValuesByIntervals(int intervalCount) {
         return MathHelper.splitValuesByIntervals(values, intervalCount);
     }
 }

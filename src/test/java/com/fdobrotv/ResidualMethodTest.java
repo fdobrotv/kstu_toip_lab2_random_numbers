@@ -15,11 +15,8 @@ public class ResidualMethodTest {
     @Test
     public void generate1000ValuesTest() throws InterruptedException {
         ResidualMethod residualMethod = new ResidualMethod();
-        for (int i = 0; i < 1000; i++) {
-            float next = residualMethod.getNext();
-            System.out.print(next + ", ");
-        }
-        System.out.println();
+        residualMethod.getValues(1000);
+
         System.out.println("Mathematical expectation: " + residualMethod.getMathematicalExpectation());
         System.out.println("Dispersion: " + residualMethod.getDispersion());
 
@@ -49,5 +46,15 @@ public class ResidualMethodTest {
         double roundedDispersion =
                 BigDecimal.valueOf(dispersion).setScale(3, RoundingMode.HALF_UP).doubleValue();
         Assertions.assertEquals(expected, roundedDispersion);
+    }
+
+    @Test
+    public void splitValuesByIntervalsTest() {
+        int intervalCount = 10;
+        List<Double> integers = new ResidualMethod().getValues(1000);
+        Map<Integer, List<Double>> integerListMap = MathHelper.splitValuesByIntervals(integers, intervalCount);
+        Assertions.assertEquals(10, integerListMap.size());
+        Integer sumOfRandomNumbers = integerListMap.values().stream().map(List::size).reduce(0, Integer::sum);
+        Assertions.assertEquals(1000, sumOfRandomNumbers);
     }
 }

@@ -3,7 +3,7 @@ package com.fdobrotv;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MathHelper {
     public static double getMathematicalExpectation(List<Double> values) {
@@ -41,21 +41,19 @@ public class MathHelper {
         return dispersion.stripTrailingZeros();
     }
 
-    public static Map<Integer, List<Double>> splitValuesByIntervals(List<Double> values, int subIntervals) {
-        List<Double> sortedValues = values.stream().sorted().collect(Collectors.toList());
-        Double firstValue = sortedValues.get(0);
-        Double lastValue = sortedValues.get(values.size() - 1);
-        double range = lastValue - firstValue;
-        Double intervalSize = range / subIntervals;
-        Map<Integer, List<Double>> tableValues = new HashMap<>();
-        Integer interval = 1;
+    public static TreeMap<Integer, List<Double>> splitValuesByIntervals(List<Double> values, int subIntervals) {
+        List<Double> sortedValues = values.stream().sorted().toList();
+        Double minValue = sortedValues.get(0);
+        Double maxValue = sortedValues.get(values.size() - 1);
+        double range = maxValue - minValue;
+        double correctionValueToCatchMaxValue = 0.0001;
+        Double intervalSize = (minValue + range + correctionValueToCatchMaxValue) / subIntervals;
+        TreeMap<Integer, List<Double>> tableValues = new TreeMap<>();
+        IntStream.range(0, subIntervals).forEach(value -> tableValues.put(value, new ArrayList<>()));
+
         for (Double value : sortedValues) {
-            if (value < interval * intervalSize) {
-                insertTableValue(tableValues, interval, value);
-            } else {
-                insertTableValue(tableValues, interval, value);
-                interval++;
-            }
+            Integer intervalNum = (int) (value / intervalSize);
+            insertTableValue(tableValues, intervalNum, value);
         }
         return tableValues;
     }

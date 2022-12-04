@@ -13,25 +13,16 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import static com.fdobrotv.MockData.getDiscreteRandomTable;
+
 
 public class RandomTableMethodTest {
     @Test
     public void generateByDiscreteTableValuesTest() throws InterruptedException {
-        TreeMap<Integer, BigDecimal> discreteRandomTable = new TreeMap<>() {{
-            put(1, BigDecimal.valueOf(0.02));
-            put(10, BigDecimal.valueOf(0.05));
-            put(15, BigDecimal.valueOf(0.1));
-            put(23, BigDecimal.valueOf(0.28));
-            put(29, BigDecimal.valueOf(0.23));
-            put(38, BigDecimal.valueOf(0.22));
-            put(42, BigDecimal.valueOf(0.1));
-        }};
+        TreeMap<Integer, BigDecimal> discreteRandomTable = getDiscreteRandomTable();
 
         RandomTableMethod randomTableMethod = new RandomTableMethod(discreteRandomTable);
-        for (int i = 0; i < 1000; i++) {
-            float next = randomTableMethod.getNext();
-            System.out.print(next + ", ");
-        }
+        randomTableMethod.getValues(1000);
 
         //Get table math expectation
         BigDecimal theoreticalMathematicalExpectation = MathHelper.getMathematicalExpectation(discreteRandomTable);
@@ -77,5 +68,15 @@ public class RandomTableMethodTest {
         double roundedDispersion =
                 dispersion.setScale(3, RoundingMode.HALF_UP).doubleValue();
         Assertions.assertEquals(expected, roundedDispersion);
+    }
+
+    @Test
+    public void splitValuesByIntervalsTest() {
+        int intervalCount = 10;
+        List<Double> integers = new RandomTableMethod(MockData.getDiscreteRandomTable()).getValues(1000);
+        Map<Integer, List<Double>> integerListMap = MathHelper.splitValuesByIntervals(integers, intervalCount);
+        Assertions.assertEquals(10, integerListMap.size());
+        Integer sumOfRandomNumbers = integerListMap.values().stream().map(List::size).reduce(0, Integer::sum);
+        Assertions.assertEquals(1000, sumOfRandomNumbers);
     }
 }

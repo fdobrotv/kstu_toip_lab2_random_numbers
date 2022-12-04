@@ -23,8 +23,10 @@ public class ResidualMethod {
 
     public ArrayList<Double> getValues(int count) {
         for (int i = 0; i < count; i++) {
-            this.getNext();
+            float next = this.getNext();
+            System.out.print(next + ", ");
         }
+        System.out.println();
         return values;
     }
 
