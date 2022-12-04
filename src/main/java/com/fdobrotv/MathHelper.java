@@ -1,9 +1,8 @@
 package com.fdobrotv;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MathHelper {
@@ -14,6 +13,15 @@ public class MathHelper {
                 .orElse(Double.NaN);
     }
 
+    public static BigDecimal getMathematicalExpectation(TreeMap<Integer, BigDecimal> values) {
+        BigDecimal mathExpectation = BigDecimal.ZERO;
+        for (Map.Entry<Integer, BigDecimal> valueToProbability: values.entrySet()){
+            BigDecimal value = valueToProbability.getValue().multiply(BigDecimal.valueOf(valueToProbability.getKey()));
+            mathExpectation = mathExpectation.add(value);
+        }
+        return mathExpectation.setScale(4, RoundingMode.HALF_UP).stripTrailingZeros();
+    }
+
     public static double getDispersion(List<Double> values) {
         double acc = 0;
         for (Double val : values) {
@@ -22,7 +30,18 @@ public class MathHelper {
         return acc - Math.pow(getMathematicalExpectation(values), 2);
     }
 
-    protected static Map<Integer, List<Double>> splitValuesByIntervals(List<Double> values, int subIntervals) {
+    public static BigDecimal getDispersion(TreeMap<Integer, BigDecimal> values) {
+        BigDecimal dispersion = BigDecimal.ZERO;
+        for (Map.Entry<Integer, BigDecimal> entry: values.entrySet()){
+            BigDecimal randomValuePoweredTwo = BigDecimal.valueOf(entry.getKey()).pow(2);
+            BigDecimal value = randomValuePoweredTwo.multiply(entry.getValue());
+            dispersion = dispersion.add(value);
+        }
+        dispersion = dispersion.subtract(getMathematicalExpectation(values).pow(2)).abs();
+        return dispersion.stripTrailingZeros();
+    }
+
+    public static Map<Integer, List<Double>> splitValuesByIntervals(List<Double> values, int subIntervals) {
         List<Double> sortedValues = values.stream().sorted().collect(Collectors.toList());
         Double firstValue = sortedValues.get(0);
         Double lastValue = sortedValues.get(values.size() - 1);

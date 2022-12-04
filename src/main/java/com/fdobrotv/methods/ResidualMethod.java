@@ -1,4 +1,7 @@
-package com.fdobrotv;
+package com.fdobrotv.methods;
+
+import com.fdobrotv.MathHelper;
+import com.fdobrotv.TableHelper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +15,7 @@ public class ResidualMethod {
     private double value = Math.pow(2, -10);
     private ArrayList<Double> values = new ArrayList<>();
 
-    float getNext() {
+    public float getNext() {
         double nextBigDecimal = getNextBigDecimal();
         values.add(nextBigDecimal);
         return (float) nextBigDecimal;

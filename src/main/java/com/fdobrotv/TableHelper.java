@@ -25,6 +25,6 @@ public class TableHelper {
         }
 
         String[] args = {"", "Total count of RVs: " + summary};
-        System.out.format("%17s | %65s |%n", args);
+        System.out.format("%17s | %65s |%n", (Object[]) args);
     }
 }
